@@ -12,8 +12,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/auth', authRoutes);
-app.use('/account', accountRoutes);
+app.use('./routes/auth.routs.js', authRoutes);
+app.use('/./routes/account.routs.js', accountRoutes);
 
 app.use(errorHandler);
 

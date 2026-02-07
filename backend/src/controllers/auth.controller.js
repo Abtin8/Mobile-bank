@@ -1,31 +1,52 @@
 import AuthService from '../services/AuthService.js';
 
-class AuthController {
-    static async signUp(req, res, next) {
-        try {
-            const { fullName, username, nationalId, password, confirmPassword } = req.body;
-            const result = await AuthService.register({ fullName, username, nationalId, password, confirmPassword });
+const signUp = async (req, res) => {
+    try {
+        const { fullName, username, nationalId, password, confirmPassword } = req.body;
 
-            if (!result.success) return res.status(400).json(result);
+        const result = await AuthService.register({
+            fullName,
+            username,
+            nationalId,
+            password,
+            confirmPassword,
+        });
 
-            res.json(result);
-        } catch (err) {
-            next(err);
+        if (!result.success) {
+            return res.status(400).json(result);
         }
+
+        res.status(201).json(result);
+    } catch (err) {
+        console.error('SIGNUP ERROR:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        });
     }
+};
 
-    static async login(req, res, next) {
-        try {
-            const { nationalId, password } = req.body;
-            const result = await AuthService.login({ nationalId, password });
+const login = async (req, res) => {
+    try {
+        const { nationalId, password } = req.body;
 
-            if (!result.success) return res.status(400).json(result);
+        const result = await AuthService.login({ nationalId, password });
 
-            res.json(result);
-        } catch (err) {
-            next(err);
+        if (!result.success) {
+            return res.status(401).json(result);
         }
-    }
-}
 
-export default AuthController;
+        res.json(result);
+    } catch (err) {
+        console.error('LOGIN ERROR:', err);
+        res.status(500).json({
+            success: false,
+            message: 'Internal server error',
+        });
+    }
+};
+
+export default {
+    signUp,
+    login,
+};
