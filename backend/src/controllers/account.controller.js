@@ -2,7 +2,7 @@ import AccountService from '../services/AccountService.js';
 
 const getDashboard = async (req, res) => {
     try {
-        const userId = req.user?.id || req.body.userId; // فعلاً ساده
+        const userId = req.user?.id || req.body.userId;
 
         const result = await AccountService.getDashboard(userId);
 
