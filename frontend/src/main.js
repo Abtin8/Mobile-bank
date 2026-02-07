@@ -1,6 +1,6 @@
 import { Modal } from './components/modal.js';
-import { AuthManager } from './services/AuthManager.js';
-import { AccountManager } from './services/AccountManager.js';
+import AuthManager from './services/AuthManager.js';
+import AccountManager from './services/AccountManager.js';
 
 const modal = new Modal();
 

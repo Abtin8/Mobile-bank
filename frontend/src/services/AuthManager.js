@@ -1,6 +1,23 @@
-import { ApiClient } from './ApiClient.js';
+import ApiClient from './ApiClient.js';
 
-export const AuthManager = {
-    signup: (data) => ApiClient.post('/auth/signup', data),
-    login: (data) => ApiClient.post('/auth/login', data),
-};
+class AuthManager {
+    static async signup(data) {
+        try {
+            const res = await ApiClient.post('/auth/signup', data);
+            return res;
+        } catch (err) {
+            return { success: false, error: err.message };
+        }
+    }
+
+    static async login(data) {
+        try {
+            const res = await ApiClient.post('/auth/login', data);
+            return res;
+        } catch (err) {
+            return { success: false, error: err.message };
+        }
+    }
+}
+
+export default AuthManager;
