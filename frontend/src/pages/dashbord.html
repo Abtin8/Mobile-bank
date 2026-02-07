@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fa">
+    <head>
+        <meta charset="UTF-8">
+        <title>داشبورد موبایل بانک</title>
+        <link rel="stylesheet" href="../style.css">
+    </head>
+    <body>
+        <header>
+            <h1>داشبورد</h1>
+        </header>
+        <main>
+            <section id="accountSection">
+                <h2>اطلاعات حساب</h2>
+                <div id="accountInfo"></div>
+                <h3>تغییر رمز عبور</h3>
+                <form id="changePasswordForm">
+                    <input
+                        type="password"
+                        name="currentPassword"
+                        placeholder="رمز فعلی"
+                        required
+                    >
+                    <input
+                        type="password"
+                        name="newPassword"
+                        placeholder="رمز جدید"
+                        required
+                    >
+                    <input
+                        type="password"
+                        name="confirmNewPassword"
+                        placeholder="تکرار رمز جدید"
+                        required
+                    >
+                    <button type="submit">تغییر رمز</button>
+                </form>
+                <button id="deleteAccountBtn">حذف حساب</button>
+            </section>
+            <section id="financeSection">
+                <h2>عملیات مالی</h2>
+                <h3>واریز</h3>
+                <form id="depositForm">
+                    <input
+                        type="number"
+                        name="amount"
+                        placeholder="مبلغ"
+                        required
+                    >
+                    <button type="submit">واریز</button>
+                </form>
+                <h3>برداشت</h3>
+                <form id="withdrawForm">
+                    <input
+                        type="number"
+                        name="amount"
+                        placeholder="مبلغ"
+                        required
+                    >
+                    <button type="submit">برداشت</button>
+                </form>
+            </section>
+        </main>
+        <script type="module" src="../main.js"></script>
+        <script type="module">
+    const changeForm = document.getElementById('changePasswordForm');
+    changeForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userId = localStorage.getItem('userId');
+      const currentPassword = e.target.currentPassword.value;
+      const newPassword = e.target.newPassword.value;
+      const confirmNewPassword = e.target.confirmNewPassword.value;
+
+      if (newPassword !== confirmNewPassword) {
+        alert('رمز جدید با تکرار آن برابر نیست!');
+        return;
+      }
+
+      const res = await AccountManager.changePassword(userId, currentPassword, newPassword);
+      if (res.success) {
+        alert('رمز با موفقیت تغییر یافت.');
+        changeForm.reset();
+      } else {
+        alert(`خطا: ${res.error}`);
+      }
+    });
+
+    const deleteBtn = document.getElementById('deleteAccountBtn');
+    deleteBtn?.addEventListener('click', async () => {
+      if (!confirm('آیا از حذف حساب مطمئن هستید؟')) return;
+      const userId = localStorage.getItem('userId');
+      const res = await AccountManager.deleteAccount(userId);
+      if (res.success) {
+        localStorage.removeItem('userId');
+        alert('حساب شما حذف شد.');
+        window.location.href = '../login.html';
+      } else {
+        alert(`خطا: ${res.error}`);
+      }
+    });
+        </script>
+    </body>
+</html>
