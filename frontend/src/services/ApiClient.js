@@ -1,39 +1,20 @@
-const API_BASE = 'http://localhost:3006';
+const BASE_URL = 'http://localhost:3000';
 
-class ApiClient {
-    static async get(endpoint) {
-        const res = await fetch(`${API_BASE}${endpoint}`);
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+export const ApiClient = {
+    get: async (path) => {
+        const res = await fetch(BASE_URL + path, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
         return res.json();
-    }
+    },
 
-    static async post(endpoint, body) {
-        const res = await fetch(`${API_BASE}${endpoint}`, {
+    post: async (path, data) => {
+        const res = await fetch(BASE_URL + path, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
+            body: JSON.stringify(data),
         });
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
         return res.json();
-    }
-
-    static async put(endpoint, body) {
-        const res = await fetch(`${API_BASE}${endpoint}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-        });
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-    }
-
-    static async delete(endpoint) {
-        const res = await fetch(`${API_BASE}${endpoint}`, {
-            method: 'DELETE',
-        });
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-        return res.json();
-    }
-}
-
-export default ApiClient;
+    },
+};

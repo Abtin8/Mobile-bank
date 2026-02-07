@@ -1,6 +1,6 @@
 import { Modal } from './components/modal.js';
-import AuthManager from './services/AuthManager.js';
-import AccountManager from './services/AccountManager.js';
+import { AuthManager } from './services/AuthManager.js';
+import { AccountManager } from './services/AccountManager.js';
 
 const modal = new Modal();
 
@@ -38,7 +38,7 @@ if (loginForm) {
 
         const res = await AuthManager.login(data);
         if (res.success) {
-            localStorage.setItem('userId', res.user.id); // ذخیره userId برای داشبورد
+            localStorage.setItem('userId', res.user.id);
             window.location.href = '/src/pages/dashboard.html';
         } else {
             modal.show(`خطا: ${res.error}`);
@@ -88,7 +88,7 @@ if (accountInfoEl) {
         کد ملی: ${res.national_id} <br>
         شماره کارت: ${res.card_number} <br>
         موجودی: ${res.balance}
-      `;
+        `;
         }
     };
     loadInfo();
